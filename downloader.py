@@ -1,9 +1,15 @@
 from requests import get, post
 from bs4 import BeautifulSoup as bs
+from configparser import ConfigParser as cp
+
+#read the config file
+config = cp()
+config.read("local.conf")
+config = config["DEFAULT"]
 
 WEBHD = "http://webhd1.ttu.edu.tw/"
-SHARE_KEY = ""
-SHARE_PWD = ""
+SHARE_KEY = config["SHARE_KEY"]
+SHARE_PWD = config["SHARE_PWD"]
 
 LOGIN_DATA = {'sharekey': SHARE_KEY, 'Locale': 'zh-TW', 'Submit':'進入社群'}
 INPUTPWD = {'inputpwd': SHARE_PWD, 'Sent':'送出'}
