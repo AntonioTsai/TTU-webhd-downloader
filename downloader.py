@@ -1,6 +1,7 @@
 from requests import get, post
 from bs4 import BeautifulSoup as bs
 from configparser import ConfigParser as cp
+import os
 
 #read the config file
 config = cp()
@@ -18,11 +19,12 @@ res = post(WEBHD + "share/sharehd.php", data=LOGIN_DATA)
 res = post(WEBHD + "share/sharehd.php", data=INPUTPWD, cookies=res.cookies)
 soup = bs(res.text, 'html5lib')
 sel = soup.select('.cistab a')
+os.mkdir(SHARE_KEY)
 for link in sel:
 	res = get(WEBHD + link['href'], cookies=res.cookies, stream=True)
 	filename = res.headers['Content-Disposition'].encode('latin1', 'ignore').decode('big5')[9:]
 	print("Saving " + filename)
-	with open(filename, 'wb') as file:
+	with open(SHARE_KEY + "/" + filename, 'wb') as file:
 		for chunk in res:
 			file.write(chunk)
 		file.close()
